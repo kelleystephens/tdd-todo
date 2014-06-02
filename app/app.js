@@ -1,6 +1,6 @@
 'use strict';
 
-var dbname = process.env.DBNAME;
+var dbname = process.env.DBNAME; // pulls from the command line
 var port = process.env.PORT || 4000;
 
 var traceur        = require('traceur');
@@ -21,12 +21,12 @@ app.set('view engine', 'jade');
 /* --- pipeline         */
 app.use(initMongo.connect);
 app.use(initRoutes);
-app.use(morgan({format: 'dev'}));
+app.use(morgan({format: 'dev'})); // logging
 app.use(express.static(__dirname + '/static'));
 app.use('/less', less(__dirname + '/less'));
-app.use(bodyParser());
-app.use(methodOverride());
-app.use(cookieSession({keys:['SEC123', '321CES']}));
+app.use(bodyParser()); // pulls stuff out of req.body and turns it into an object
+app.use(methodOverride()); // overrides a method (can turn POST into DELETE)
+app.use(cookieSession({keys:['SEC123', '321CES']})); // cookie config
 
 /* --- http server      */
 var server = require('http').createServer(app);
