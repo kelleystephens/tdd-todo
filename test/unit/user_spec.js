@@ -24,16 +24,17 @@ describe('User', function(){
   });
 
   beforeEach(function(done){
-    console.log('BEFORE EACH');
-    //global.nss.db.collection('users').drop(done);
-    done();
+    global.nss.db.collection('users').drop(function(){
+      done();
+    });
   });
 
   describe('.register', function(){
     beforeEach(function(done){
-      console.log('CREATING SUE - before each');
-      /// create a user!!! Sue!
-      done();
+      var obj = {email:'sue@aol.com', password:'1234'};
+      User.register(obj, function(){
+        done();
+      })
     });
 
     it('should successfully register a user', function(done){
@@ -43,20 +44,16 @@ describe('User', function(){
         expect(u).to.be.an.instanceof(User);
         expect(u._id).to.be.an.instanceof(Mongo.ObjectID);
         expect(u.password).to.have.length(60);
-        console.log('IT 1');
         done();
       });
     });
 
     it('should NOT successfully register a user', function(done){
-      console.log('IT 2');
-      done();
-
-      // var obj = {email:'sue@aol.com', password:'1234'};
-      // User.register(obj, function(u){
-      // expect(u).to.be.null;
-      // done();
-      // });
+      var obj = {email:'sue@aol.com', password:'1234'};
+      User.register(obj, function(u){
+        expect(u).to.be.null;
+        done();
+      });
     });
   });
 
