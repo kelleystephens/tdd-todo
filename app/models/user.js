@@ -2,6 +2,8 @@
 
 var users = global.nss.db.collection('users');
 var bcrypt = require('bcrypt');
+var Mongo = require('mongodb');
+var _ = require('lodash');
 
 class User{
   static register(obj, fn){
@@ -31,6 +33,17 @@ class User{
       }
     });
   }
+
+  static findById(id, fn){
+    if(id.length !== 24){fn(null); return;}
+
+    id = Mongo.ObjectID(id);
+    users.findOne({_id:id}, (e,u)=>{
+      u = _.create(User.prototype, u);
+      fn(u);
+    });
+  }
+
 }
 
 
