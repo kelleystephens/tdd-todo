@@ -2,7 +2,7 @@
 
 var tasks = global.nss.db.collection('tasks');
 var Mongo = require('mongodb');
-// var _ = require('lodash');
+var _ = require('lodash');
 
 class Task {
   static create(userId, obj, fn){
@@ -16,6 +16,40 @@ class Task {
     tasks.save(task, (e,t)=>{
       fn(t);
     });
+  }
+
+  static findById(id, fn){
+    if(id.length !== 24){fn(null); return;}
+
+    id = Mongo.ObjectID(id);
+    tasks.findOne({_id:id}, (e,t)=>{
+      if(t){
+        t = _.create(Task.prototype, t);
+        fn(t);
+      }else{
+        fn(null);
+      }
+    });
+  }
+
+  static findByUserId(userId, fn){
+    if(userId.length !== 24){fn(null); return;}
+    userId = Mongo.ObjectID(userId);
+
+    tasks.find({userId:userId}).toArray((e, a)=>{
+      fn(a);
+    });
+  }
+
+  destroy(fn){
+    tasks.findAndRemove({_id:this._id}, ()=>fn());
+  }
+
+  toggleComplete(){
+    this.isComplete = !this.isComplete;
+  }
+  save(fn){
+    tasks.save(this, ()=>fn());
   }
 
 }
