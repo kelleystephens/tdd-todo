@@ -143,6 +143,17 @@ describe('Task', function(){
     });
   });
 
+  describe('#edit', function(){
+    it('should edit the properties of the task', function(){
+      Task.findById(task._id.toString(), function(task){
+        task.edit({title: 'store', due: '5/14/2014', color: 'red'});
+        expect(task.title).to.equal('store');
+        expect(moment(task.due).format('MM/DD/YYYY')).to.equal('05/14/2014');
+        expect(task.color).to.equal('red');
+      });
+    });
+  });
+
   describe('#save', function(){
     it('should save a task', function(done){
       task.toggleComplete();

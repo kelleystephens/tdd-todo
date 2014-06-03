@@ -48,6 +48,13 @@ class Task {
   toggleComplete(){
     this.isComplete = !this.isComplete;
   }
+
+  edit(obj){
+    this.title = obj.title;
+    this.due = new Date(obj.due);
+    this.color = obj.color;
+  }
+
   save(fn){
     tasks.save(this, ()=>fn());
   }
