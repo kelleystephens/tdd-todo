@@ -46,21 +46,21 @@ describe('Task', function(){
         expect(t._id).to.be.ok;
         expect(t.title).to.equal('Go shopping');
         expect(t.due).to.be.an.instanceof(Date);
-        expect(moment(t.due).format('MM/DD/YYYY')).to.equal('3/11/2014');
+        expect(moment(t.due).format('MM/DD/YYYY')).to.equal('03/11/2014');
         expect(t.color).to.equal('green');
         expect(t.userId).to.deep.equal(sue._id);
         expect(t.userId).to.be.an.instanceof(Mongo.ObjectID);
         expect(t.isComplete).to.be.false;
-        done();
       });
+      done();
     });
 
     it('should create a task - object user id', function(done){
       Task.create(sue._id, {title: 'salad', due:'4/14/2014', color:'green'}, function(t){
         expect(t).to.be.instanceof(Task);
         expect(t._id).to.be.ok;
-        done();
       });
+      done();
     });
   });
 });
