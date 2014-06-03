@@ -12,6 +12,7 @@ var request = require('supertest');
 var traceur = require('traceur');
 
 var User;
+var sue;
 
 describe('User', function(){
   before(function(done){
@@ -25,7 +26,8 @@ describe('User', function(){
 
   beforeEach(function(done){
     global.nss.db.collection('users').drop(function(){
-      User.register({email:'sue@aol.com', password:'abcd'}, function(){
+      User.register({email:'sue@aol.com', password:'abcd'}, function(u){
+        sue = u;
         done();
       });
     });
@@ -50,7 +52,7 @@ describe('User', function(){
     });
   });
 
-    describe('.login', function(){
+  describe('.login', function(){
     it('should successfully login a user', function(done){
       User.login({email:'sue@aol.com', password:'abcd'}, function(u){
         expect(u).to.be.ok;
@@ -67,6 +69,23 @@ describe('User', function(){
 
     it('should NOT login user - bad password', function(done){
       User.login({email:'sue@aol.com', password:'wrong'}, function(u){
+        expect(u).to.be.null;
+        done();
+      });
+    });
+  });
+
+  describe('.findById', function(){
+    it('should successfully find a user', function(done){
+      User.findById(sue._id.toString(), function(u){
+        expect(u).to.be.an.instanceof(User);
+        expect(u.email).to.equal(sue.email);
+        done();
+      });
+    });
+
+    it('should NOT successfully find a user', function(done){
+      User.findById('not an id', function(u){
         expect(u).to.be.null;
         done();
       });
