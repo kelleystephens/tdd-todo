@@ -35,7 +35,7 @@ class User{
   }
 
   static findById(id, fn){
-    if(id.length !== 24){fn(null); return;}
+    // if(id.length !== 24){fn(null); return;}
 
     id = Mongo.ObjectID(id);
     users.findOne({_id:id}, (e,u)=>{

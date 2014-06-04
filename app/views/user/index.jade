@@ -1,0 +1,30 @@
+h2 Welcome to your Dashboard, #{user.email}
+
+h3 New Task
+form
+  input#title(type=text, autofocus=true, placeholder="Title")
+  input#date(type=date)
+  input#color(type=color)
+  button#add Add Task
+
+.table-responsive
+  table.table.table-striped
+    thead
+      tr
+        th Complete
+        th Title
+        th Due Date
+        th
+        th
+    tbody
+      if(tasks)
+        each task in tasks
+          tr
+            td
+              input.complete(type=checkbox)
+            td.title task.title
+            td.date task.date
+            td
+              button.edit Edit
+            td
+              button.delete.glyphicon.glyphicon-trash
